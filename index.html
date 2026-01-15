@@ -1,118 +1,200 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>Share Flex Message</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: #eef2ff;
-    }
-    .msg {
-      display: none;
-      padding: 20px 28px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(0,0,0,.15);
-      font-size: 18px;
-      text-align: center;
-    }
-    #errorMsg { color: #d9534f; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Flex Message Ready</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #eef2ff;
+        }
+        .msg {
+            display: none;
+            padding: 20px 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 18px;
+            text-align: center;
+            color: #333;
+        }
+        #errorMsg { 
+            color: #d9534f;
+            word-break: break-word;
+            max-width: 80vw;
+        }
+        #loadingMsg { color: #5b78ff; }
+        #successMsg { color: #28a745; }
+    </style>
 </head>
-
 <body>
-  <div class="msg" id="loadingMsg">⏳ กำลังเปิดหน้าจอแชร์ Flex Message...</div>
-  <div class="msg" id="successMsg">✅ แชร์ Flex Message สำเร็จแล้ว</div>
-  <div class="msg" id="errorMsg">❌ เกิดข้อผิดพลาด</div>
+    <div class="msg" id="loadingMsg">⏳ กำลังเริ่มต้น LIFF และเตรียมการแชร์...</div>
+    <div class="msg" id="successMsg">✅ แชร์ให้เพื่อน ๆ สำเร็จแล้ว</div>
+    <div class="msg" id="errorMsg">❌ เกิดข้อผิดพลาดในการแชร์</div> 
 
-  <script>
-    // ================= FLEX MESSAGE =================
-    const flexMessage = {
-      type: "flex",
-      altText: "📚 แนะนำหนังสือน่าอ่าน",
-      contents: {
-        type: "carousel",
-        contents: [
-          {
-            type: "bubble",
-            body: {
-              type: "box",
-              layout: "vertical",
-              contents: [
-                {
-                  type: "image",
-                  url: "https://img5.pic.in.th/file/secure-sv1/1334f31ba74cf7569.jpg",
-                  size: "full",
-                  aspectMode: "cover",
-                  aspectRatio: "2.3:3",
-                  animated: true
-                },
-                {
-                  type: "button",
-                  action: {
-                    type: "uri",
-                    label: "ดูเพิ่มเติม",
-                    uri: "https://liff.line.me/2008827673-1tC1xai2"
-                  },
-                  position: "absolute",
-                  offsetTop: "80%",
-                  offsetStart: "30%"
-                }
-              ]
+    <script>
+        // 1. กำหนด Flex Message
+        const flexMessage = {
+            type: "flex",
+            altText: "📚 แนะนำหนังสือน่าอ่าน โดย นตท.ชั้นปีที่ 2",
+            contents: {
+                "type": "carousel",
+                "contents": [
+                    {
+                        "type": "bubble",
+                        "body": {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "image",
+                                    "size": "full",
+                                    "aspectMode": "cover",
+                                    "aspectRatio": "2.3:3",
+                                    "url": "https://img5.pic.in.th/file/secure-sv1/1334f31ba74cf7569.jpg"
+                                },
+                                {
+                                    "type": "button",
+                                    "action": {
+                                        "type": "uri",
+                                        "uri": "https://line.me/",
+                                        "label": "ดูรายละเอียด"
+                                    },
+                                    "position": "absolute",
+                                    "offsetTop": "80%",
+                                    "offsetEnd": "18%",
+                                    "offsetStart": "30%",
+                                    "offsetBottom": "10%"
+                                }
+                            ],
+                            "paddingAll": "none"
+                        }
+                    },
+                    {
+                        "type": "bubble",
+                        "hero": {
+                            "type": "image",
+                            "size": "full",
+                            "aspectMode": "cover",
+                            "aspectRatio": "2.9:3",
+                            "url": "https://img2.pic.in.th/pic/2466c8f955a271f09.jpg",
+                            "action": {
+                                "type": "uri",
+                                "label": "watch",
+                                "uri": "https://youtube.com/shorts/EIuKGGyKk2Q?si=ItVKi3aoFqIs0rzj"
+                            }
+                        },
+                        "body": {
+                            "type": "box",
+                            "layout": "vertical",
+                            "backgroundColor": "#66CC66",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "มุมมองนักอ่านพระเจ้า",
+                                    "weight": "bold",
+                                    "size": "md",
+                                    "color": "#4A148C",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "แนะนำโดย : นตท.เดชาธร วรรณสุทธิ์",
+                                    "size": "sm",
+                                    "color": "#6A1B9A",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "bubble",
+                        "hero": {
+                            "type": "image",
+                            "size": "full",
+                            "aspectMode": "cover",
+                            "aspectRatio": "2.9:3",
+                            "url": "https://img2.pic.in.th/pic/3f7929fb22ef6958a.jpg",
+                            "action": {
+                                "type": "uri",
+                                "label": "watch",
+                                "uri": "https://youtube.com/shorts/jGdofZri3M8?si=JS0ehJyYZETo3AmK"
+                            }
+                        },
+                        "body": {
+                            "type": "box",
+                            "layout": "vertical",
+                            "backgroundColor": "#66CC66",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "โทษทางปกครอง กฎหมายเปรียนเทียบ",
+                                    "weight": "bold",
+                                    "size": "md",
+                                    "color": "#4A148C",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "แนะนำโดย : นตท.ชัชชัย เกื้อชู",
+                                    "size": "sm",
+                                    "color": "#6A1B9A",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    }
+                ]
             }
-          }
-        ]
-      }
-    };
-    // =================================================
+        };
 
-    function show(id) {
-      document.querySelectorAll(".msg").forEach(el => el.style.display = "none");
-      document.getElementById(id).style.display = "block";
-    }
-
-    async function run() {
-      try {
-        show("loadingMsg");
-
-        await liff.init({
-          liffId: "2008827673-1tC1xai2"   // 🔴 เปลี่ยนถ้า LIFF ID ของคุณไม่ตรง
-        });
-
-        if (!liff.isLoggedIn()) {
-          liff.login();
-          return;
+        function displayMessage(id) {
+            document.querySelectorAll('.msg').forEach(el => el.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
         }
 
-        if (!liff.isApiAvailable("shareTargetPicker")) {
-          throw new Error("โปรดเปิดลิงก์นี้ในแอป LINE บนมือถือ");
+        async function main() {
+            displayMessage('loadingMsg');
+            
+            try {
+                // อัปเดต LIFF ID เป็นหมายเลขใหม่ของคุณ
+                await liff.init({ liffId: "2008827673-1tC1xai2" });  
+
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                    return;
+                }
+                
+                if (!liff.isApiAvailable("shareTargetPicker")) {
+                    throw new Error("เครื่องนี้ไม่รองรับการแชร์ หรือต้องเปิดผ่านแอป LINE เท่านั้น");
+                }
+
+                // เปิดตัวเลือกการแชร์
+                const result = await liff.shareTargetPicker([flexMessage]);
+                
+                if (result) {
+                    displayMessage('successMsg');
+                    setTimeout(() => liff.closeWindow(), 2000);
+                } else {
+                    liff.closeWindow();
+                }
+
+            } catch (err) {
+                console.error("Error:", err);
+                const errorMsgElement = document.getElementById('errorMsg');
+                errorMsgElement.innerHTML = `❌ เกิดข้อผิดพลาด: <br> ${err.message}`;
+                displayMessage('errorMsg'); 
+            }
         }
 
-        const result = await liff.shareTargetPicker([flexMessage]);
-
-        if (result) {
-          show("successMsg");
-          setTimeout(() => liff.closeWindow(), 2000);
-        } else {
-          liff.closeWindow();
-        }
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("errorMsg").innerText = "❌ " + err.message;
-        show("errorMsg");
-      }
-    }
-
-    run();
-  </script>
+        main();
+    </script>
 </body>
 </html>
