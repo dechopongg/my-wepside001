@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Share Flex Message</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #eef2ff;
+    }
+    .msg {
+      display: none;
+      padding: 20px 28px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.15);
+      font-size: 18px;
+      text-align: center;
+    }
+    #errorMsg { color: #d9534f; }
+  </style>
+</head>
+
+<body>
+  <div class="msg" id="loadingMsg">⏳ กำลังเปิดหน้าจอแชร์ Flex Message...</div>
+  <div class="msg" id="successMsg">✅ แชร์ Flex Message สำเร็จแล้ว</div>
+  <div class="msg" id="errorMsg">❌ เกิดข้อผิดพลาด</div>
+
+  <script>
+    // ================= FLEX MESSAGE =================
+    const flexMessage = {
+      type: "flex",
+      altText: "📚 แนะนำหนังสือน่าอ่าน",
+      contents: {
+        type: "carousel",
+        contents: [
+          {
+            type: "bubble",
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "image",
+                  url: "https://img5.pic.in.th/file/secure-sv1/1334f31ba74cf7569.jpg",
+                  size: "full",
+                  aspectMode: "cover",
+                  aspectRatio: "2.3:3",
+                  animated: true
+                },
+                {
+                  type: "button",
+                  action: {
+                    type: "uri",
+                    label: "ดูเพิ่มเติม",
+                    uri: "https://liff.line.me/2008827673-1tC1xai2"
+                  },
+                  position: "absolute",
+                  offsetTop: "80%",
+                  offsetStart: "30%"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    };
+    // =================================================
+
+    function show(id) {
+      document.querySelectorAll(".msg").forEach(el => el.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    async function run() {
+      try {
+        show("loadingMsg");
+
+        await liff.init({
+          liffId: "2008827673-1tC1xai2"   // 🔴 เปลี่ยนถ้า LIFF ID ของคุณไม่ตรง
+        });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        if (!liff.isApiAvailable("shareTargetPicker")) {
+          throw new Error("โปรดเปิดลิงก์นี้ในแอป LINE บนมือถือ");
+        }
+
+        const result = await liff.shareTargetPicker([flexMessage]);
+
+        if (result) {
+          show("successMsg");
+          setTimeout(() => liff.closeWindow(), 2000);
+        } else {
+          liff.closeWindow();
+        }
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("errorMsg").innerText = "❌ " + err.message;
+        show("errorMsg");
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
